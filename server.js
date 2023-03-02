@@ -12,11 +12,9 @@ const PORT = process.env.PORT || 3001;
 // Socket.io for chat feature
 
 
-const server = app.listen(PORT, () => {
-  console.log(`API running at http://localhost:${PORT}`);
-});
-
+const server = require('http').createServer(app);
 const io = require('socket.io')(server);
+
 const SOCKET_PORT = 3002;
 
 io.listen(SOCKET_PORT, () => {
@@ -30,15 +28,16 @@ io.on('connection', (socket) => {
     console.log('user disconnected');
   });
 });
-//==============================================================
+
 
 // Sets up the Express app to handle data parsing
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use("/", allRoutes);
 
+
 sequelize.sync({ force: false }).then(function () {
-  app.listen(PORT, function () {
+  server.listen(PORT, function () {
     console.log(`API running at http://localhost:${PORT}`);
   });
 });
