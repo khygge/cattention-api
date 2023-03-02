@@ -1,43 +1,41 @@
 const express = require("express");
 const allRoutes = require("./controllers");
-
 const sequelize = require("./config/connection");
+const http = require("http");
 
 // Sets up the Express App
-// =============================================================
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-//==============================================================
-// Socket.io for chat feature
+// Creates HTTP server
+const server = http.createServer(app);
 
-
-const server = require('http').createServer(app);
-const io = require('socket.io')(server);
-
-const SOCKET_PORT = 3002;
-
-io.listen(SOCKET_PORT, () => {
-  console.log(`Socket.io running at http://localhost:${SOCKET_PORT}`);
+// Sets up socket.io
+const io = require("socket.io")(server, {
+  cors: {
+    origin: "*",
+  },
 });
 
-io.on('connection', (socket) => {
-  console.log('a user connected');  
+// Sets up socket.io event handlers
+io.on("connection", (socket) => {
+  console.log("a user connected");
 
-  socket.on('disconnect', () => {
-    console.log('user disconnected');
+  socket.on("disconnect", () => {
+    console.log("user disconnected");
   });
 });
-
 
 // Sets up the Express app to handle data parsing
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+
+// Sets up routes
 app.use("/", allRoutes);
 
-
-sequelize.sync({ force: false }).then(function () {
-  server.listen(PORT, function () {
+// Starts database sync and Express server
+sequelize.sync({ force: false }).then(() => {
+  server.listen(PORT, () => {
     console.log(`API running at http://localhost:${PORT}`);
   });
 });
