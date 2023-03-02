@@ -10,10 +10,21 @@ const PORT = process.env.PORT || 3001;
 
 //==============================================================
 // Socket.io for chat feature
+
+
+const server = app.listen(PORT, () => {
+  console.log(`API running at http://localhost:${PORT}`);
+});
+
 const io = require('socket.io')(server);
+const SOCKET_PORT = 3002;
+
+io.listen(SOCKET_PORT, () => {
+  console.log(`Socket.io running at http://localhost:${SOCKET_PORT}`);
+});
 
 io.on('connection', (socket) => {
-  console.log('a user connected');
+  console.log('a user connected');  
 
   socket.on('disconnect', () => {
     console.log('user disconnected');
