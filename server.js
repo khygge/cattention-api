@@ -27,6 +27,7 @@ io.on("connection", (socket) => { //user connects
 
   socket.on("chat message", (msg) => { // Broadcast the incoming message to all clients
     io.emit("chat message", msg);
+    console.log("chat message: " + msg);
   });
 });
 //=======================================================
