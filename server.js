@@ -6,7 +6,7 @@ const http = require("http");
 // Sets up the Express App
 const app = express();
 const PORT = process.env.PORT || 3001;
-
+//=======================================================
 // Creates HTTP server
 const server = http.createServer(app);
 
@@ -18,13 +18,18 @@ const io = require("socket.io")(server, {
 });
 
 // Sets up socket.io event handlers
-io.on("connection", (socket) => {
+io.on("connection", (socket) => { //user connects
   console.log("a user connected");
 
-  socket.on("disconnect", () => {
+  socket.on("disconnect", () => { //user disconnects
     console.log("user disconnected");
   });
+
+  socket.on("chat message", (msg) => { // Broadcast the incoming message to all clients
+    io.emit("chat message", msg);
+  });
 });
+//=======================================================
 
 // Sets up the Express app to handle data parsing
 app.use(express.urlencoded({ extended: true }));
