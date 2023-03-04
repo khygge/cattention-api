@@ -20,6 +20,16 @@ router.get("/:userId", async (req, res) => {
   }
 });
 
+router.post("/", async (req, res) => {
+  const createUser = await User.create({
+    username: req.body.username,
+    password: req.body.password,
+    work_time: 0,
+  });
+
+  res.json(createUser);
+});
+
 router.post("/login", async (req, res) => {
   const findOneUser = await User.findOne({
     where: {
