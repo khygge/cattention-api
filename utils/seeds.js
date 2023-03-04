@@ -6,16 +6,19 @@ const seedDb = async () => {
 
   let userData = [
     {
-      user_name: "bblaubachs",
+      username: "bblaubachs",
       password: "password",
       work_time: 0,
     },
     {
-      user_name: "bungus",
+      username: "bungus",
       password: "password",
       work_time: 135,
     },
   ];
+
+  // !bulkCreate is not triggering hooks. The login route will NOT work for these users created.
+  // !use the route /api/users in a POST request to make a user with the bcrypt hash.
 
   const users = await User.bulkCreate(userData);
 
