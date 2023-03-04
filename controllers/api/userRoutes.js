@@ -32,6 +32,7 @@ router.get("/:userId", async (req, res) => {
   }
 });
 
+// Creates a user and signs a token to the user.
 router.post("/", async (req, res) => {
   try {
     // Creating user. Req.body should only have username & password.
@@ -63,6 +64,7 @@ router.post("/", async (req, res) => {
   }
 });
 
+// Finds user and signs jwt to user if username/password are correct.
 router.post("/login", async (req, res) => {
   try {
     const findOneUser = await User.findOne({
@@ -98,6 +100,31 @@ router.post("/login", async (req, res) => {
   }
 });
 
+router.put("/:userId", async (req, res) => {
+  try {
+    const findUserAndUpdate = User.update(
+      {
+        username: req.body.username,
+        work_time: req.body.work_time,
+      },
+      {
+        where: {
+          id: req.params.userId,
+        },
+      }
+    );
+
+    if (!findUserAndUpdate) {
+      return res.status(404).json({ msg: "no such user" });
+    }
+
+    res.json({ msg: "User updated" });
+  } catch (err) {
+    res.status(500).json({ msg: "An error occured in update user route", err });
+  }
+});
+
+// Verify token against JWT secret.
 router.get("/token/isValidToken", async (req, res) => {
   const token = req.headers?.authorization?.split(" ")[1];
 
