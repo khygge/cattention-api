@@ -24,14 +24,17 @@ const seedDb = async () => {
 
   let placeholderRoomData = [
     {
+      room_name: "bingus is cool",
       code: "suidhasuiodw72387akhdwq",
       UserId: 1,
     },
     {
+      room_name: "Bongus?",
       code: "sdsa3w72387a55kh7dwq",
       UserId: 2,
     },
     {
+      room_name: "NoooooO!",
       code: "s322sdfa55kh7dwq",
       UserId: 1,
     },
