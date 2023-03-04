@@ -1,6 +1,7 @@
 const express = require("express");
 const allRoutes = require("./controllers");
 const sequelize = require("./config/connection");
+const models = require("./models");
 const http = require("http");
 
 // Sets up the Express App
