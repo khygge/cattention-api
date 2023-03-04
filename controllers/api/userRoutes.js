@@ -21,39 +21,68 @@ router.get("/:userId", async (req, res) => {
 });
 
 router.post("/", async (req, res) => {
-  const createUser = await User.create({
-    username: req.body.username,
-    password: req.body.password,
-    work_time: 0,
-  });
-
-  res.json(createUser);
-});
-
-router.post("/login", async (req, res) => {
-  const findOneUser = await User.findOne({
-    where: {
+  try {
+    // Creating user. Req.body should only have username & password.
+    const createUser = await User.create({
       username: req.body.username,
-    },
-  });
+      password: req.body.password,
+      work_time: 0,
+    });
 
-  if (!findOneUser) {
-    return res.status(401).json({ msg: "Invalid credentials." });
-  } else if (!bcrypt.compareSync(req.body.password, findOneUser.password)) {
-    return res.status(401).json({ msg: "Invalid credentials." });
-  } else {
+    // Sign token and attach it in an object to send back.
     const token = jwt.sign(
       {
-        id: findOneUser.id,
-        username: findOneUser.username,
+        id: createUser.id,
+        username: createUser.username,
       },
       process.env.JWT_SECRET,
       {
         expiresIn: "12h",
       }
     );
+    res.json({
+      token: token,
+      user: createUser,
+    });
+  } catch (err) {
+    res
+      .status(500)
+      .json({ msg: "An error occured in user creation route", err });
+  }
+});
 
-    return res.json({ token: token, user: findOneUser });
+router.post("/login", async (req, res) => {
+  try {
+    const findOneUser = await User.findOne({
+      where: {
+        username: req.body.username,
+      },
+    });
+
+    if (!findOneUser) {
+      // ! No found user.
+      return res.status(401).json({ msg: "Invalid credentials." });
+    } else if (!bcrypt.compareSync(req.body.password, findOneUser.password)) {
+      // ! Incorrect password.
+      return res.status(401).json({ msg: "Invalid credentials." });
+    } else {
+      // Password and username are correct at this point.
+      // Sign token and attach it in an object to send back.
+      const token = jwt.sign(
+        {
+          id: findOneUser.id,
+          username: findOneUser.username,
+        },
+        process.env.JWT_SECRET,
+        {
+          expiresIn: "12h",
+        }
+      );
+
+      return res.json({ token: token, user: findOneUser });
+    }
+  } catch (err) {
+    res.status(500).json({ msg: "An error occured in user login route", err });
   }
 });
 
