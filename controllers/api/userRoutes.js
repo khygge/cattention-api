@@ -98,4 +98,26 @@ router.post("/login", async (req, res) => {
   }
 });
 
+router.get("/token/isValidToken", async (req, res) => {
+  const token = req.headers?.authorization?.split(" ")[1];
+
+  if (!token) {
+    return res.status(403).json({ isValid: false, msg: "Invalid token." });
+  }
+  try {
+    const tokenData = jwt.verify(token, process.env.JWT_SECRET);
+    // ! This will throw an error if it does not verify. We wrap it in try/catch so our API doesn't crash.
+    // ! The only way for this response to be triggered is if the verify succeeds.
+    res.json({
+      isValid: true,
+      user: tokenData,
+    });
+  } catch (err) {
+    res.status(403).json({
+      isValid: false,
+      msg: "invalid token",
+    });
+  }
+});
+
 module.exports = router;
