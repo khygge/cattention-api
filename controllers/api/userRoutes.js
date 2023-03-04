@@ -100,6 +100,7 @@ router.post("/login", async (req, res) => {
   }
 });
 
+// Update a user with user id
 router.put("/:userId", async (req, res) => {
   try {
     const findUserAndUpdate = User.update(
@@ -121,6 +122,25 @@ router.put("/:userId", async (req, res) => {
     res.json({ msg: "User updated" });
   } catch (err) {
     res.status(500).json({ msg: "An error occured in update user route", err });
+  }
+});
+
+router.delete("/:userId", async (req, res) => {
+  try {
+    const deleteUser = await User.destroy({
+      where: {
+        id: req.params.userId,
+      },
+    });
+    console.log(deleteUser);
+
+    if (!deleteUser) {
+      return res.status(404).json({ msg: "No such user!" });
+    }
+
+    res.json({ msg: "User deleted", res: deleteUser });
+  } catch (err) {
+    res.status(500).json({ msg: "An error occured in delete user route", err });
   }
 });
 
