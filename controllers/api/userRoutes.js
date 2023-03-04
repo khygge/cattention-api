@@ -5,18 +5,30 @@ const bcrypt = require("bcrypt");
 const { User, Cat, Room } = require("../../models");
 
 router.get("/", async (req, res) => {
-  const findAllUsers = await User.findAll();
+  try {
+    const findAllUsers = await User.findAll();
 
-  res.json(findAllUsers);
+    res.json(findAllUsers);
+  } catch (err) {
+    res
+      .status(500)
+      .json({ msg: "An error occurred in the get all users route", err });
+  }
 });
 
 router.get("/:userId", async (req, res) => {
-  const findOneUser = await User.findByPk(req.params.userId);
+  try {
+    const findOneUser = await User.findByPk(req.params.userId);
 
-  if (!findOneUser) {
-    return res.status(404).json({ msg: "No such user" });
-  } else {
-    return res.json(findOneUser);
+    if (!findOneUser) {
+      return res.status(404).json({ msg: "No such user" });
+    } else {
+      return res.json(findOneUser);
+    }
+  } catch (err) {
+    res
+      .status(500)
+      .json({ msg: "An error occurred in the get one user route", err });
   }
 });
 
