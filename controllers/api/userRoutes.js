@@ -8,4 +8,14 @@ router.get("/", async (req, res) => {
   res.json(findAllUsers);
 });
 
+router.get("/:userId", async (req, res) => {
+  const findOneUser = await User.findByPk(req.params.userId);
+
+  if (!findOneUser) {
+    res.status(404).json({ msg: "No such user" });
+  } else {
+    res.json(findOneUser);
+  }
+});
+
 module.exports = router;
