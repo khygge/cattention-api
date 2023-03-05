@@ -13,11 +13,11 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.get("/:roomcode", async (req, res) => {
+router.get("/:roomCode", async (req, res) => {
   try {
     const foundRoom = await Room.findOne({
       where: {
-        code: req.params.roomcode,
+        code: req.params.roomCode,
       },
     });
     if (!foundRoom) {
@@ -31,4 +31,36 @@ router.get("/:roomcode", async (req, res) => {
   }
 });
 
+router.post("/", async (req, res) => {
+  try {
+    const createdRoom = await Room.create({
+      room_name: req.body.room_name,
+      code: req.body.code,
+      UserId: req.body.UserId,
+    });
+    res.json(createdRoom);
+  } catch (err) {
+    res
+      .status(500)
+      .json({ msg: "An error occurred in the create room route", err });
+  }
+});
+
+router.delete("/:roomCode", async (req, res) => {
+  try {
+    const deleteRoom = await Room.destroy({
+      where: {
+        code: req.params.roomCode,
+      },
+    });
+    if (!deleteRoom) {
+      return res.status(404).json({ msg: "No such room" });
+    }
+    res.json(deleteRoom);
+  } catch (err) {
+    res
+      .status(500)
+      .json({ msg: "An error occurred in the delete room route", err });
+  }
+});
 module.exports = router;
