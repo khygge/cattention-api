@@ -3,6 +3,7 @@ const allRoutes = require("./controllers");
 const sequelize = require("./config/connection");
 const models = require("./models");
 const http = require("http");
+const cors = require("cors");
 
 // Sets up the Express App
 const app = express();
@@ -33,6 +34,7 @@ io.on("connection", (socket) => { //user connects
 });
 //=======================================================
 
+app.use(cors())
 // Sets up the Express app to handle data parsing
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -40,9 +42,13 @@ app.use(express.json());
 // Sets up routes
 app.use("/", allRoutes);
 
+
+
+
 // Starts database sync and Express server
 sequelize.sync({ force: false }).then(() => {
   server.listen(PORT, () => {
     console.log(`API running at http://localhost:${PORT}`);
   });
 });
+

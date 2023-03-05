@@ -17,4 +17,6 @@ Room.init(
   { sequelize }
 );
 
+
+
 module.exports = Room;
