@@ -18,7 +18,9 @@ router.get("/", async (req, res) => {
 
 router.get("/:userId", async (req, res) => {
   try {
-    const findOneUser = await User.findByPk(req.params.userId);
+    const findOneUser = await User.findByPk(req.params.userId, {
+      include: [Cat],
+    });
 
     if (!findOneUser) {
       return res.status(404).json({ msg: "No such user" });
@@ -164,6 +166,29 @@ router.get("/token/isValidToken", async (req, res) => {
       isValid: false,
       msg: "invalid token",
     });
+  }
+});
+
+// Update user by adding cat
+router.put("/:userId/cats/:catId", async (req, res) => {
+  try {
+    const foundUser = await User.findByPk(req.params.userId);
+    // If no user found by ID, return with 404
+    if (!foundUser) {
+      return res.status(404).json({ msg: "No such user!" });
+    } else {
+      const addCatToUser = await foundUser.addCat(req.params.catId);
+      // if this fails, return a 404 with no cat found.
+      if (!addCatToUser) {
+        return res.status(404).json({ msg: "No such cat!" });
+      } else {
+        return res.json(addCatToUser);
+      }
+    }
+  } catch (err) {
+    res
+      .status(500)
+      .json({ msg: "An error occured in the add cat to user route", err });
   }
 });
 
