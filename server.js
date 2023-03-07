@@ -38,6 +38,7 @@ io.on("connection", (socket) => {
     io.to(data.roomCode).emit("chat message", {
       message: data.message,
       timestamp: new Date().toLocaleTimeString(),
+      roomCode: data.roomCode,
     });
   });
 
