@@ -18,4 +18,14 @@ router.get("/:catId", async (req, res) => {
   }
 });
 
+router.post("/", async (req, res) => {
+  const createCat = await Cat.create({
+    cat_name: req.body.cat_name,
+    img_src: req.body.img_src,
+    min_work_time: req.body.min_work_time,
+  });
+
+  res.json(createCat);
+});
+
 module.exports = router;
