@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const { User, Room, Cat } = require("../../models");
 
+// Get all cats.
 router.get("/", async (req, res) => {
   try {
     const allCats = await Cat.findAll();
@@ -12,6 +13,7 @@ router.get("/", async (req, res) => {
   }
 });
 
+// Get one cat by ID.
 router.get("/:catId", async (req, res) => {
   try {
     const foundCat = await Cat.findByPk(req.params.catId);
@@ -26,6 +28,7 @@ router.get("/:catId", async (req, res) => {
   }
 });
 
+// Create new cat
 router.post("/", async (req, res) => {
   try {
     const createCat = await Cat.create({
@@ -40,6 +43,7 @@ router.post("/", async (req, res) => {
   }
 });
 
+// Update cat by cat ID.
 router.put("/:catId", async (req, res) => {
   try {
     const updatedCat = await Cat.update(
