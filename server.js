@@ -22,49 +22,28 @@ const io = require("socket.io")(server, {
 // Sets up socket.io event handlers
 const rooms = {};
 
+
 io.on("connection", (socket) => {
   console.log("a user connected");
 
   socket.on("join room", (roomCode) => {
-    if (!rooms[roomCode]) {
-      rooms[roomCode] = [];
-    }
-
-    rooms[roomCode].push(socket.id);
     socket.join(roomCode);
-
-    console.log(`User ${socket.id} joined room ${roomCode}`);
+    console.log(`User joined room ${roomCode}`);
   });
 
-  socket.on("leave room", (roomCode) => {
-    if (rooms[roomCode]) {
-      rooms[roomCode] = rooms[roomCode].filter((id) => id !== socket.id);
-      socket.leave(roomCode);
+  socket.on("chat message", (data) => {
+    console.log("Received message:", data.message);
 
-      console.log(`User ${socket.id} left room ${roomCode}`);
-    }
+    // Emit the message to all clients in the same room
+    io.to(data.roomCode).emit("chat message", {
+      message: data.message,
+      timestamp: new Date().toLocaleTimeString(),
+    });
   });
 
   socket.on("disconnect", () => {
     console.log("user disconnected");
-
-    Object.entries(rooms).forEach(([roomCode, sockets]) => {
-      rooms[roomCode] = sockets.filter((id) => id !== socket.id);
-      socket.leave(roomCode);
-    });
   });
-
-  socket.on("chat message", ({ roomCode, message }) => {
-    if (rooms[roomCode]) {
-      const currentTime = new Date();
-      const timestamp = currentTime.toLocaleTimeString();
-      const fullMessage = `[${timestamp}] ${message}`; // Add timestamp to message
-  
-      io.to(roomCode).emit("chat message", { msg: fullMessage, timestamp });
-      console.log(`Chat message "${fullMessage}" sent to room ${roomCode}`);
-    }
-  });
-  
 });
 //=======================================================
 
