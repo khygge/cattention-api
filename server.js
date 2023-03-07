@@ -20,16 +20,30 @@ const io = require("socket.io")(server, {
 });
 
 // Sets up socket.io event handlers
-io.on("connection", (socket) => { //user connects
+const rooms = {};
+
+
+io.on("connection", (socket) => {
   console.log("a user connected");
 
-  socket.on("disconnect", () => { //user disconnects
-    console.log("user disconnected");
+  socket.on("join room", (roomCode) => {
+    socket.join(roomCode);
+    console.log(`User joined room ${roomCode}`);
   });
 
-  socket.on("chat message", (msg) => { // Broadcast the incoming message to all clients
-    io.emit("chat message", msg);
-    console.log("chat message: " + msg);
+  socket.on("chat message", (data) => {
+    console.log("Received message:", data.message);
+
+    // Emit the message to all clients in the same room
+    io.to(data.roomCode).emit("chat message", {
+      message: data.message,
+      timestamp: new Date().toLocaleTimeString(),
+      roomCode: data.roomCode,
+    });
+  });
+
+  socket.on("disconnect", () => {
+    console.log("user disconnected");
   });
 });
 //=======================================================
