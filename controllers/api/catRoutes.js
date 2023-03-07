@@ -40,4 +40,29 @@ router.post("/", async (req, res) => {
   }
 });
 
+router.put("/:catId", async (req, res) => {
+  try {
+    const updatedCat = await Cat.update(
+      {
+        cat_name: req.body.cat_name,
+        img_src: req.body.img_src,
+        min_work_time: req.body.min_work_time,
+      },
+      {
+        where: {
+          id: req.params.catId,
+        },
+      }
+    );
+
+    if (updatedCat[0]) {
+      return res.json(updatedCat);
+    } else {
+      return res.status(404).json({ msg: "No such cat!" });
+    }
+  } catch (err) {
+    res.status(500).json({ msg: "Error in the cat update route", err });
+  }
+});
+
 module.exports = router;
