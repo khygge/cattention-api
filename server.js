@@ -21,14 +21,18 @@ const io = require("socket.io")(server, {
 
 // Sets up socket.io event handlers
 const rooms = {};
-
+const botName = "CATtention Bot";
 
 io.on("connection", (socket) => {
   console.log("a user connected");
 
-  socket.on("join room", (roomCode) => {
+  socket.once("join room", (roomCode, userObject) => {
     socket.join(roomCode);
-    console.log(`User joined room ${roomCode}`);
+    console.log(`${userObject} joined room ${roomCode}`);
+    io.to(roomCode).emit("chat message", {
+      message: `${botName}: Welcome to CATtention!`
+    });
+
   });
 
   socket.on("chat message", (data) => {
