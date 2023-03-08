@@ -26,12 +26,13 @@ const botName = "CATtention Bot";
 io.on("connection", (socket) => {
   console.log("a user connected");
 
-  socket.once("join room", (roomCode, userObject) => {
+  socket.once("join room", (roomCode, {userObject}) => {
     socket.join(roomCode);
-    console.log(`${userObject} joined room ${roomCode}`);
+    console.log(`${userObject.username} joined room ${roomCode}`);
     io.to(roomCode).emit("chat message", {
-      message: `${botName}: Welcome to CATtention!`
+      message: `${botName}: ${userObject.username} has joined the room. Welcome to CATtention!`,
     });
+
 
   });
 
