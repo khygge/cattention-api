@@ -32,15 +32,17 @@ io.on("connection", (socket) => {
   });
 
   socket.on("chat message", (data) => {
-    console.log("Received message:", data.message);
-
+    console.log("Received message:", data.message, "from room:", data.roomCode, "at", new Date().toLocaleTimeString(), "from user:", data.userObject);
+  
     // Emit the message to all clients in the same room
     io.to(data.roomCode).emit("chat message", {
       message: data.message,
       timestamp: new Date().toLocaleTimeString(),
       roomCode: data.roomCode,
+      userObject: data.userObject, // Send the username back to the client
     });
   });
+  
 
   socket.on("disconnect", () => {
     console.log("user disconnected");
