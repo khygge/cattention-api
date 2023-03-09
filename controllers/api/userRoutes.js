@@ -42,6 +42,7 @@ router.post("/", async (req, res) => {
       username: req.body.username,
       password: req.body.password,
       work_time: 0,
+      minigame_score: 0,
     });
 
     // Sign token and attach it in an object to send back.
@@ -109,6 +110,7 @@ router.put("/:userId", async (req, res) => {
       {
         username: req.body.username,
         work_time: req.body.work_time,
+        minigame_score: req.body.minigame_score,
       },
       {
         where: {
