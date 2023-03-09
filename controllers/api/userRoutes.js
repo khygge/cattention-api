@@ -194,4 +194,78 @@ router.put("/:userId/cats/:catId", async (req, res) => {
   }
 });
 
+// Add time to user from num time in the req params
+router.put("/:userId/time/:numMins", async (req, res) => {
+  try {
+    const foundUser = await User.findByPk(req.params.userId);
+    if (!foundUser) {
+      return res.status(404).json({ msg: "no such user" });
+    }
+    let currentMinutes = parseInt(foundUser.work_time);
+
+    let newMinutes = (currentMinutes += parseInt(req.params.numMinutes));
+
+    const updateUser = User.update(
+      {
+        work_time: newMinutes,
+      },
+      {
+        where: {
+          id: req.params.userId,
+        },
+      }
+    );
+
+    if (!updateUser) {
+      return res.status(500).json({ msg: "An error occurred." });
+    }
+    return res.json({
+      msg: "User updated",
+      oldMinutes: currentMinutes,
+      newMinutes,
+    });
+  } catch (err) {
+    res
+      .status(500)
+      .json({ msg: "An error occured in the add hours to user route", err });
+  }
+});
+
+// Update user's score in the database with req params
+router.put("/:userId/score/:scoreNum", async (req, res) => {
+  try {
+    const foundUser = await User.findByPk(req.params.userId);
+    if (!foundUser) {
+      return res.status(404).json({ msg: "no such user" });
+    }
+    let currentScore = parseInt(foundUser.minigame_score);
+
+    let newScore = (currentScore += parseInt(req.params.scoreNum));
+
+    const updateUser = User.update(
+      {
+        minigame_score: newScore,
+      },
+      {
+        where: {
+          id: req.params.userId,
+        },
+      }
+    );
+
+    if (!updateUser) {
+      return res.status(500).json({ msg: "An error occurred." });
+    }
+    return res.json({
+      msg: "User updated",
+      oldScore: currentScore,
+      newScore,
+    });
+  } catch (err) {
+    res
+      .status(500)
+      .json({ msg: "An error occured in the add hours to user route", err });
+  }
+});
+
 module.exports = router;
