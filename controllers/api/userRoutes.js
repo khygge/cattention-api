@@ -231,4 +231,41 @@ router.put("/:userId/hours/:numHours", async (req, res) => {
   }
 });
 
+// Update user's score in the database with req params
+router.put("/:userId/score/:scoreNum", async (req, res) => {
+  try {
+    const foundUser = await User.findByPk(req.params.userId);
+    if (!foundUser) {
+      return res.status(404).json({ msg: "no such user" });
+    }
+    let currentScore = parseInt(foundUser.minigame_score);
+
+    let newScore = (currentScore += parseInt(req.params.scoreNum));
+
+    const updateUser = User.update(
+      {
+        minigame_score: newScore,
+      },
+      {
+        where: {
+          id: req.params.userId,
+        },
+      }
+    );
+
+    if (!updateUser) {
+      return res.status(500).json({ msg: "An error occurred." });
+    }
+    return res.json({
+      msg: "User updated",
+      oldScore: currentScore,
+      newScore,
+    });
+  } catch (err) {
+    res
+      .status(500)
+      .json({ msg: "An error occured in the add hours to user route", err });
+  }
+});
+
 module.exports = router;
