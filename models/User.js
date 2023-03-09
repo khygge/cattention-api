@@ -19,6 +19,10 @@ User.init(
       type: DataTypes.INTEGER,
       allowNull: false,
     },
+    minigame_score: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
   },
   {
     sequelize,

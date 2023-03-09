@@ -9,11 +9,13 @@ const seedDb = async () => {
       username: "bblaubachs",
       password: "password",
       work_time: 0,
+      minigame_score: 0,
     },
     {
       username: "bungus",
       password: "password",
       work_time: 135,
+      minigame_score: 4,
     },
   ];
 
