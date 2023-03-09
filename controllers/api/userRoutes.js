@@ -194,20 +194,20 @@ router.put("/:userId/cats/:catId", async (req, res) => {
   }
 });
 
-// Add hours to user from num hours in the req params
-router.put("/:userId/hours/:numHours", async (req, res) => {
+// Add time to user from num time in the req params
+router.put("/:userId/time/:numMins", async (req, res) => {
   try {
     const foundUser = await User.findByPk(req.params.userId);
     if (!foundUser) {
       return res.status(404).json({ msg: "no such user" });
     }
-    let currentHours = parseInt(foundUser.work_time);
+    let currentMinutes = parseInt(foundUser.work_time);
 
-    let newHours = (currentHours += parseInt(req.params.numHours));
+    let newMinutes = (currentMinutes += parseInt(req.params.numMinutes));
 
     const updateUser = User.update(
       {
-        work_time: newHours,
+        work_time: newMinutes,
       },
       {
         where: {
@@ -221,8 +221,8 @@ router.put("/:userId/hours/:numHours", async (req, res) => {
     }
     return res.json({
       msg: "User updated",
-      oldHours: currentHours,
-      newHours,
+      oldMinutes: currentMinutes,
+      newMinutes,
     });
   } catch (err) {
     res
