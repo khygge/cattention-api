@@ -202,8 +202,9 @@ router.put("/:userId/time/:numMins", async (req, res) => {
       return res.status(404).json({ msg: "no such user" });
     }
     let currentMinutes = parseInt(foundUser.work_time);
+    let oldMinutes = currentMinutes;
 
-    let newMinutes = (currentMinutes += parseInt(req.params.numMinutes));
+    let newMinutes = (currentMinutes += parseInt(req.params.numMins));
 
     const updateUser = User.update(
       {
@@ -221,7 +222,7 @@ router.put("/:userId/time/:numMins", async (req, res) => {
     }
     return res.json({
       msg: "User updated",
-      oldMinutes: currentMinutes,
+      oldMinutes,
       newMinutes,
     });
   } catch (err) {
@@ -239,6 +240,7 @@ router.put("/:userId/score/:scoreNum", async (req, res) => {
       return res.status(404).json({ msg: "no such user" });
     }
     let currentScore = parseInt(foundUser.minigame_score);
+    let oldScore = currentScore;
 
     let newScore = (currentScore += parseInt(req.params.scoreNum));
 
@@ -258,7 +260,7 @@ router.put("/:userId/score/:scoreNum", async (req, res) => {
     }
     return res.json({
       msg: "User updated",
-      oldScore: currentScore,
+      oldScore,
       newScore,
     });
   } catch (err) {
