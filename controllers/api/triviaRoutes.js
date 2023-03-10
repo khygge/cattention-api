@@ -3,6 +3,7 @@ const router = express.Router();
 const sequelize = require("sequelize");
 const { Trivia, User, Cat, Room } = require("../../models");
 
+// Get all questions
 router.get("/", async (req, res) => {
   try {
     const allQuestions = await Trivia.findAll();
@@ -12,6 +13,7 @@ router.get("/", async (req, res) => {
   }
 });
 
+// Get question by ID
 router.get("/:questionId", async (req, res) => {
   try {
     const oneQuestion = await Trivia.findByPk(req.params.questionId);
@@ -25,6 +27,7 @@ router.get("/:questionId", async (req, res) => {
   }
 });
 
+// Create Question
 router.post("/", async (req, res) => {
   try {
     const createTrivia = await Trivia.create({
@@ -38,6 +41,7 @@ router.post("/", async (req, res) => {
   }
 });
 
+// Returns one random question
 router.get("/question/random", async (req, res) => {
   try {
     const randomQuestion = await Trivia.findOne({
@@ -49,4 +53,5 @@ router.get("/question/random", async (req, res) => {
     res.status(500).json(err);
   }
 });
+
 module.exports = router;
