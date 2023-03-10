@@ -1,4 +1,4 @@
-const { User, Room, Cat } = require("../models");
+const { User, Room, Cat, Trivia } = require("../models");
 const sequelize = require("../config/connection");
 
 const seedDb = async () => {
@@ -67,6 +67,31 @@ const seedDb = async () => {
   await users[0].addCat(1);
   await users[1].addCat([1, 2, 3]);
 
+  const triviaData = [
+    {
+      question: "Which US city had a cat as mayor for almost 20 years?",
+      answers:
+        "Talkeetna, Alaska;Jacksboro, Texas;Warm River, Idaho;Gardner, Kansas",
+      correct_answer: "Talkeetna, Alaska",
+    },
+    {
+      question: "When was the first cat video recorded?",
+      answers: "1952;1921;1894;1842",
+      correct_answer: "1894",
+    },
+    {
+      question: "All cats are born with what color eyes?",
+      answers: "Black;Green;Blue;Brown",
+      correct_answer: "Blue",
+    },
+    {
+      question: "How many teeth does an adult cat have?",
+      answers: "36;30;38;24",
+      correct_answer: "30",
+    },
+  ];
+
+  const createAllQuestions = await Trivia.bulkCreate(triviaData);
   process.exit(0);
 };
 
