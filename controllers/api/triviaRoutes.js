@@ -38,13 +38,15 @@ router.post("/", async (req, res) => {
   }
 });
 
-// router.get("/random", async (req, res) => {
-//   try {
-//     const randomQuestion = await Trivia.findOne({order:'random()'});
-//     res.json(randomQuestion);
-//   } catch (err) {
-//     console.log(err);
-//     res.status(500).json(err);
-//   }
-// });
+router.get("/question/random", async (req, res) => {
+  try {
+    const randomQuestion = await Trivia.findOne({
+      order: [sequelize.fn("RAND")],
+    });
+    res.json(randomQuestion);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json(err);
+  }
+});
 module.exports = router;

@@ -92,6 +92,7 @@ const seedDb = async () => {
   ];
 
   const createAllQuestions = await Trivia.bulkCreate(triviaData);
+
   process.exit(0);
 };
 
