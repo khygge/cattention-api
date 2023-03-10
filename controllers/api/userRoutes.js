@@ -203,7 +203,7 @@ router.put("/:userId/time/:numMins", async (req, res) => {
     }
     let currentMinutes = parseInt(foundUser.work_time);
 
-    let newMinutes = (currentMinutes += parseInt(req.params.numMinutes));
+    let newMinutes = (currentMinutes += parseInt(req.params.numMins));
 
     const updateUser = User.update(
       {
