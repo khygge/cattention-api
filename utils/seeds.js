@@ -46,19 +46,29 @@ const seedDb = async () => {
 
   let catData = [
     {
-      cat_name: "Default Cat",
-      img_src: "default cat",
+      cat_name: "Rested Cat",
+      img_src: "rested.jpg",
       min_work_time: 0,
     },
     {
-      cat_name: "Supah Cat",
-      img_src: "source",
+      cat_name: "Collab Cats",
+      img_src: "cat collab.jpg",
+      min_work_time: 30,
+    },
+    {
+      cat_name: "Game Master",
+      img_src: "game master.jpg",
       min_work_time: 60,
     },
     {
-      cat_name: "Golden Catte",
-      img_src: "source",
-      min_work_time: 120,
+      cat_name: "High Score",
+      img_src: "high score.jpg",
+      min_work_time: 100,
+    },
+    {
+      cat_name: "Scholar Cat",
+      img_src: "scholarly.jpg",
+      min_work_time: 600,
     },
   ];
 
