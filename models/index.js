@@ -1,6 +1,7 @@
 const User = require("./User");
 const Cat = require("./Cat");
 const Room = require("./Room");
+const Trivia = require("./Trivia");
 
 User.hasMany(Room);
 Room.belongsTo(User);
@@ -12,4 +13,5 @@ module.exports = {
   User,
   Cat,
   Room,
+  Trivia,
 };
