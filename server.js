@@ -27,8 +27,9 @@ io.on("connection", (socket) => {
   console.log("a user connected");
 
   socket.once("join room", (roomCode, {userObject}) => {
+    console.log(userObject)
     socket.join(roomCode);
-    console.log(`${userObject.username} joined room ${roomCode}`);
+   
     io.to(roomCode).emit("chat message", {
       message: `${botName}: ${userObject.username} has joined the room. Welcome to CATtention!`,
     });
@@ -39,9 +40,37 @@ io.on("connection", (socket) => {
     rooms[roomCode].users.push(userObject);
 
 
+
+
     io.to(roomCode).emit("users in room", rooms[roomCode].users);
 
   });
+
+  socket.on('disconnect', () => {
+    console.log('User disconnected')
+
+    Object.keys(rooms).forEach(roomCode => {
+      if (rooms[roomCode]) {
+        const userIndex = rooms[roomCode].users.findIndex(user => user.socketId === socket.id);
+        console.log(userIndex)
+        if (userIndex !== -1) {
+          const disconnectedUser = rooms[roomCode].users.splice(userIndex, 1)[0];
+         
+          io.to(roomCode).emit("chat message", {
+            message: `${botName}: ${disconnectedUser.username} has left the room.`,
+          });
+        
+          io.to(roomCode).emit("users in room", rooms[roomCode].users);
+        }
+      }
+    });
+  });
+
+
+
+
+
+
 
 
 
@@ -56,12 +85,15 @@ io.on("connection", (socket) => {
       userObject: data.userObject, // Send the username back to the client
     });
   });
-  
 
-  socket.on("disconnect", () => {
-    console.log("user disconnected");
-  });
 });
+
+
+
+
+
+      
+
 //=======================================================
 
 app.use(cors())
