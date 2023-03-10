@@ -32,9 +32,18 @@ io.on("connection", (socket) => {
     io.to(roomCode).emit("chat message", {
       message: `${botName}: ${userObject.username} has joined the room. Welcome to CATtention!`,
     });
+    if (!rooms[roomCode]) {
+    
+      rooms[roomCode] = { users: [] };
+    }
+    rooms[roomCode].users.push(userObject);
 
+
+    io.to(roomCode).emit("users in room", rooms[roomCode].users);
 
   });
+
+
 
   socket.on("chat message", (data) => {
     console.log("Received message:", data.message, "from room:", data.roomCode, "at", new Date().toLocaleTimeString(), "from user:", data.userObject);
