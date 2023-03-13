@@ -151,8 +151,5 @@ Emma Waltho: [ewaltho](https://github.com/ewaltho)
 
 Savannah Miller: [VisualViolet](https://github.com/ewaltho)
 
-
-Contact: No contact information provided.
-
 ---
 
