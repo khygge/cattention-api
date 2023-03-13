@@ -19,6 +19,13 @@ const io = require("socket.io")(server, {
   },
 });
 
+app.use(cors());
+// Sets up the Express app to handle data parsing
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+
+// Sets up routes
+app.use("/", allRoutes);
 // Sets up socket.io event handlers
 const rooms = {};
 const botName = "CATtention Bot";
@@ -165,14 +172,6 @@ io.on("connection", (socket) => {
 });
 
 //=======================================================
-
-app.use(cors());
-// Sets up the Express app to handle data parsing
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
-
-// Sets up routes
-app.use("/", allRoutes);
 
 // Starts database sync and Express server
 sequelize.sync({ force: false }).then(() => {
