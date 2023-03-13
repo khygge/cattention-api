@@ -77,6 +77,31 @@ The url prefix for this API is `https://cattention-api.herokuapp.com/api/`
 * To only return one item, use the endpoint `/cats/:catId`
  * This example would be `/cats/
 
+`GET users/token/isValidToken`
+
+    request:
+    fetch("https://cattention-api.herokuapp.com/api/users/isValidToken", {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            "authorization": `Bearer ${token}`
+        },
+    });
+
+
+    response
+    {
+	"isValid": true,
+	"user": {
+		"id": 5,
+		"username": "bungerd",
+		"iat": 1677969707,
+		"exp": 1678012907
+	    }
+    }
+    
+* Must include the token in a string with Bearer, a single space, and then the token.
+
 ### PUT Requests
 
 `PUT /users/:userId/cats/:catId`
@@ -101,6 +126,16 @@ The url prefix for this API is `https://cattention-api.herokuapp.com/api/`
 }
 
 * This returns the user's old minutes, and their new minutes.
+
+`PUT /users/:userId/score/:scoreNum`
+
+*scoreNum is the number to add to this user*
+
+    response {
+	"msg": "User updated",
+	"oldScore": 0,
+	"newScore": 1
+    }   
 
 ## License
 
