@@ -66,14 +66,14 @@ io.on("connection", (socket) => {
     });
   });
 
-  socket.on("timer", ({ roomCode, time }) => {
+  socket.on("timer", ({ roomCode, time, workStateBoolean }) => {
     socket.join(roomCode);
 
     const minutesWorked = time;
 
     const interval = setInterval(() => {
       timer(time);
-      io.to(roomCode).emit("timer", { text, minutesWorked });
+      io.to(roomCode).emit("timer", { text, minutesWorked, workStateBoolean });
     }, 1000);
 
     console.log(`Room code is: ${roomCode}`);
