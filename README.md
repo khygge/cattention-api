@@ -2,7 +2,8 @@
 
 ## Description
 
-<img height=30 src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" /><img height=30 src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-plain-wordmark.svg" /><img height=30 src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/express/express-original-wordmark.svg" /><img height=30 src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original-wordmark.svg" /><img height=30 src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/sequelize/sequelize-original-wordmark.svg" /><img height=30 src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/heroku/heroku-original.svg" />
+<img height=30 src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" /><img height=30 src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-plain-wordmark.svg" /><img height=30 src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/express/express-original-wordmark.svg" /><img height=30 src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original-wordmark.svg" /><img height=30 src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/sequelize/sequelize-original-wordmark.svg" /><img height=30 src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/heroku/heroku-original.svg" /><img height=30 src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/socketio/socketio-original.svg" />
+          
                                                
 
 This is an API built for the web app CATtention, deployed to heroku.
@@ -26,7 +27,7 @@ Not required. Visit the link for the deployed front-end here. Or, if you would l
 
 The url prefix for this API is `https://cattention-api.herokuapp.com/api/`
 
-### Get Requests
+### GET Requests
 
 `GET /rooms/`
 
@@ -73,6 +74,31 @@ The url prefix for this API is `https://cattention-api.herokuapp.com/api/`
 * Returns an array of cat objects.
 * To only return one item, use the endpoint `/cats/:catId`
  * This example would be `/cats/
+
+### PUT Requests
+
+`PUT /users/:userId/cats/:catId`
+
+*:userId is the ID of the user we would like to update. :catId is the ID of the cat to add to the user.*
+
+    response {
+		"UserId": 3,
+		"CatId": "2",
+		"createdAt": "2023-03-13T19:48:30.732Z",
+		"updatedAt": "2023-03-13T19:48:30.732Z"
+	}
+
+`PUT /users/:userId/time/:mins`
+
+*:userId is the user to add minutes to. The amount of minutes to add are put in the :mins param.*
+
+    response {
+	"msg": "User updated",
+	"oldMinutes": 5404,
+	"newMinutes": 8104
+}
+
+* This returns the user's old minutes, and their new minutes.
 
 ## License
 
