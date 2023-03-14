@@ -23,6 +23,9 @@ User.init(
       type: DataTypes.INTEGER,
       allowNull: false,
     },
+    profile_badge: {
+      type: DataTypes.STRING,
+    },
   },
   {
     sequelize,
